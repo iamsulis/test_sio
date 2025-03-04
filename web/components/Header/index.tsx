@@ -9,7 +9,7 @@ const Header: React.FC = () => {
                     <h3 className="text-2xl grow">Article</h3>
                     <ul className="flex gap-[4em] items-center">
                         <div className="flex gap-7">
-                            <li>ABC</li>
+                            {/* <li>ABC</li> */}
                             <li>
                                 <FaBell className="w-6 h-6" />
                             </li>
