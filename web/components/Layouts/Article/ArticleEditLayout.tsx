@@ -8,7 +8,7 @@ interface DataArticle {
 }
 
 interface ArticleEditProps {
-    articleId: string;  // ID artikel yang akan diupdate
+    articleId: number;  // ID artikel yang akan diupdate
 }
 
 const ArticleEditLayout: React.FC<ArticleEditProps> = ({ articleId }) => {
@@ -28,22 +28,25 @@ const ArticleEditLayout: React.FC<ArticleEditProps> = ({ articleId }) => {
             setLoading(true);
             try {
                 const response = await fetch(`https://api-trials.x5.com.au/api/articles/${articleId}`);
+                console.log('API Response Status:', response.status);  // Log status response
                 if (!response.ok) {
-                    throw new Error('Gagal mengambil data artikel');
+                    throw new Error(`Gagal mengambil data artikel, status code: ${response.status}`);
                 }
 
                 const data = await response.json();
+                console.log('Data artikel:', data);  // Log data yang diterima dari API
 
                 // Memastikan data ada sebelum mencoba mengakses properti
-                if (data && data.title && data.content) {
+                if (data) {
                     setFormData({
-                        title: data.title,
-                        content: data.content,
+                        title: data.data.title,
+                        content: data.data.content,
                     });
                 } else {
                     throw new Error('Data artikel tidak lengkap');
                 }
             } catch (err) {
+                console.error('Error fetching article data:', err);  // Log error
                 setError('Terjadi kesalahan saat mengambil data artikel');
             } finally {
                 setLoading(false);
@@ -51,8 +54,6 @@ const ArticleEditLayout: React.FC<ArticleEditProps> = ({ articleId }) => {
         };
 
         fetchArticleData();
-
-        console.log(`https://api-trials.x5.com.au/api/articles/${articleId}`);
     }, [articleId]);
 
     // Menangani perubahan input

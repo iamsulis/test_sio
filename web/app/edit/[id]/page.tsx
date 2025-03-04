@@ -4,26 +4,25 @@
 import { useParams } from 'next/navigation';  // Menggunakan useParams dari next/navigation
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ArticleEditLayout from "@/components/Layouts/Article/ArticleEditLayout";
-import { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//     title: "Article Edit",
-//     description: "This is Next.js Home for TailAdmin Dashboard Template",
-// };
+// import { Metadata } from "next";
 
 export default function ArticleEditPage() {
-    // Mengambil ID artikel menggunakan useParams()
-    const { id } = useParams();  // id akan tersedia jika rute dinamis sudah dikonfigurasi dengan benar
+    const { id } = useParams();
 
     if (!id) {
-        return <p>Loading...</p>;  // Menampilkan loading jika ID artikel belum tersedia
+        return <p>Loading...</p>;
+    }
+
+    const articleId = Array.isArray(id) ? parseInt(id[0], 10) : parseInt(id, 10);
+
+    if (isNaN(articleId)) {
+        return <p>Article ID tidak valid</p>;
     }
 
     return (
         <>
             <DefaultLayout>
-                {/* Mengirimkan ID artikel ke komponen ArticleEditLayout */}
-                <ArticleEditLayout articleId={id} />
+                <ArticleEditLayout articleId={articleId} />
             </DefaultLayout>
         </>
     );
